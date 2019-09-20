@@ -4,15 +4,25 @@
 ## Multiple Coulomb Scattering of electrons in matter
 
 F. Salvat, J.D. Martinez, R. Mayol, J. Parellada:
+
 A Monte Carlo program to simulate the penetration and energy loss of keV
 electrons through matter
+
 Computer Physics Communications 42 (1986) 93—104
-mcsda.f stored as AALC at the CPC program library in Belfast
+
+Code mcsda.f stored as AALC at the CPC program library in Belfast
 
 translated into Fortran 90 and C++
 - multics.f90  Fortran90
 - multicspp.cpp  plain C++
 - multics.cc with ROOT
+
+Successfully applied to scattering of GeV electrons in thin ( 0.1 mm to 5mm )
+layers of silicon
+
+The energy loss calculation uses the original Landau theory (d sigma/d dE ~ 1/dE^2)
+without shell corrections and only approximates the widht and most probable value
+of the distribton, while the mean value is quite OK (Bethe-Bloch)
 
 ## bugs fixed from mcsda.f
 
@@ -27,5 +37,6 @@ translated into Fortran 90 and C++
 
 - DIRECT is wrong at small angles
   completely changed with proper rotation matrix
+  multiple scattering correct down to mrad for GeV electrons
 
 - Wentzel model needs AA1 but it is not assigned in case of IS = 0
