@@ -8,7 +8,7 @@ A Monte Carlo program to simulate the penetration and energy loss of keV
 electrons through matter  
 Computer Physics Communications 42 (1986) 93—104
 
-Code mcsda.f stored as AALC at the CPC program library in Belfast
+Code mcsda.f stored as AALC at the CPC program library in Belfast: http://cpc.cs.qub.ac.uk/
 
 translated into Fortran 90 and C++
 - multics.f90  Fortran90
