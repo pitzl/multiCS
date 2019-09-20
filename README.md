@@ -15,14 +15,15 @@ Code mcsda.f stored as AALC at the CPC program library in Belfast
 translated into Fortran 90 and C++
 - multics.f90  Fortran90
 - multicspp.cpp  plain C++
-- multics.cc with ROOT
+- multics.cc with ROOT, vertical through a thin infinite layer
+- edgesc.cc with ROOT, edge-on through a thin layer
 
-Successfully applied to scattering of GeV electrons in thin ( 0.1 mm to 5mm )
-layers of silicon
+Successfully applied to the multiple scattering of GeV electrons in thin
+( 0.1 mm to 5 mm ) layers of silicon.
 
 The energy loss calculation uses the original Landau theory (d sigma/d dE ~ 1/dE^2)
-without shell corrections and only approximates the widht and most probable value
-of the distribton, while the mean value is quite OK (Bethe-Bloch)
+without shell corrections and only approximates the width and most probable value
+of the distribton, while the mean value is quite OK (Bethe-Bloch).
 
 ## bugs fixed from mcsda.f
 
