@@ -3,11 +3,9 @@
 
 ## Multiple Coulomb Scattering of electrons in matter
 
-F. Salvat, J.D. Martinez, R. Mayol, J. Parellada:
-
+F. Salvat, J.D. Martinez, R. Mayol, J. Parellada:  
 A Monte Carlo program to simulate the penetration and energy loss of keV
-electrons through matter
-
+electrons through matter  
 Computer Physics Communications 42 (1986) 93—104
 
 Code mcsda.f stored as AALC at the CPC program library in Belfast
