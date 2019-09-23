@@ -27,7 +27,7 @@ of the distribton, while the mean value is quite OK (Bethe-Bloch).
 
 - CALL RMBRG( rngd, EC, E, D, 1D-6, 10, 6 ) ! 10 gets overwritten!
 
-  SUBROUTINE RMBRG( fct, XL, XU, Y, EPS, NPART, IPRNT )      
+  SUBROUTINE RMBRG( fct, XL, XU, Y, EPS, NPART, IPRNT )  
 
   NPART = -NPART ! flag low accuracy
 
