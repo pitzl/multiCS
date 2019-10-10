@@ -3,8 +3,7 @@
 
 // based on mcsda.f
 // F. Salvat, J.D. Martinez, R. Mayol, J. Parellada
-// COMP. PHYS. COMMUN. 42 (1986) 93
-// AALC
+// COMP. PHYS. COMMUN. 42 (1986) 93 AALC
 
 // C++ with ROOT by Daniel Pitzl, DESY, Sep 2019
 
@@ -283,7 +282,7 @@ int main()
   double AL2 = 1.71824 ;
 
   cout << "  SCREENING CONSTANTS:" << endl
-       << "  A      = " << A << endl
+       << "  AA     = " << AA << endl
        << "  alpha1 = " << AL1 << endl
        << "  alpha2 = " << AL2 << endl;
 
@@ -488,9 +487,9 @@ int main()
 	EINV = 1/E;
 	double FA = E + SL2; // E+mc2
 	RB = E + SL22;  // E+2mc2
-	double BETA = E*RB/( FA*FA ); // beta^2
-	double SFACT = BETA*SL2; // beta^2 mc^2
-	double QMI = ( E+E )*RB*SL22I;
+	double BETA2 = E*RB/( FA*FA ); // beta^2
+	double SFACT = BETA2*SL2; // beta^2 mc^2
+	double QMI = ( E+E)*RB*SL22I;
 	QFACT = QMI + QMI;
 	QME = QFACT + QFACT;
 
@@ -534,14 +533,14 @@ int main()
 	double WA = fie;
 	double CSI = E*expot;
 	if( CSI < 6.338065465611359 )
-	  WA = ZT*EINV * 3.1776907270853916 * sqrt( CSI ) / XMFP;
+	  WA = ZT*EINV / XMFP * 3.1776907270853916 * sqrt( CSI );
 	else {
-	  FA = 1 - BETA; // 1/gamma2
+	  FA = 1 - BETA2; // 1/gamma2
 	  FB = sqrt( FA ); // 1/gamma
 	  FT = 1 - FB;
 	  WA = 2*ZT*EINV / XMFP *           // Bethe-Bloch, without 1/beta^2
 	    ( log( E*expot2*SFACT/FA ) -
-	      ( FB+FB+BETA ) * 6.931471805599453e-1 +
+	      ( FB+FB+BETA2 ) * 6.931471805599453e-1 +
 	      FA + 0.125*FT*FT );
 	}
 	if( lout )
@@ -638,7 +637,7 @@ int main()
 
       } // inelastic
 
-      else { // ELASTIC COLLISION
+      else { // ELASTIC COLLISION see Baro et al 1994
 
 	double rnd = unirnd(rgen);
 	double FB = rnd*SET;

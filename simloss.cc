@@ -2,6 +2,11 @@
 // Daniel Pitzl, Sep 2019
 // energy loss a la Landau and Salvat
 
+// make simloss
+// simloss -e 5000 -t 150 -n 10100
+// creates simloss.root
+
+#include <cstdlib> // atoi
 #include <iostream> // cout
 #include <cmath> // sqrt, sin, cos, log
 #include <random>
@@ -16,22 +21,31 @@
 using namespace std;
 
 //------------------------------------------------------------------------------
-int main()
+int main( int argc, char* argv[] )
 {
-  // tracks:
+  // USER steering:
 
   int ntr = 10*1000;
-
-  // THICKNESS:
 
   double thck = 150e-4; // [cm]
 
   //double step = 0.06435e-4; // [cm] inelastic MFP
   double step = 0.1e-4; // [cm]
 
-  // incident energy:
+  double e0mev = 1;
 
-  double e0mev = 5000;
+  for( int i = 1; i < argc; ++i ) {
+
+    if( !strcmp( argv[i], "-n" ) )
+      ntr = atoi( argv[++i] );
+
+    if( !strcmp( argv[i], "-t" ) )
+      thck = atof( argv[++i] )*1e-4; // [um]
+
+    if( !strcmp( argv[i], "-e" ) )
+      e0mev = atof( argv[++i] ); // [MeV]
+
+  } // argc
 
   // ELEMENT DATA:
 
@@ -92,20 +106,24 @@ int main()
   TH1I hde1( "de1", "single energy loss;energy loss [keV];inelastics", 200, 0, 2 );
   TH1I hde2( "de2", "single energy loss;energy loss [keV];inelastics", 200, 0, 200 );
 
-  TH1I hloss( "loss", "total energy loss;energy loss [keV];tracks", 200, 0, 5*eloss );
+  TH1I htde( "tde", "total energy loss;energy loss [keV];tracks", 200, 0, 5*eloss );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // randoms:
+
   ranlux24 rgen;
   rgen.seed( time(NULL) ); // seconds since 1.1.1970
   uniform_real_distribution <double> unirnd( 0, 1 );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   double E = E0;                    // atomic units
 
   double EINV = 1/E;
   double FA = E + SL2; // E+mc2
   double RB = E + SL22;  // E+2mc2
-  double BETA = E*RB/( FA*FA ); // beta^2
-  double SFACT = BETA*SL2;
+  double BETA2 = E*RB/( FA*FA ); // beta^2
+  double SFACT = BETA2 * SL2;
 
   // AVERAGE ENERGY LOSS PER INELASTIC COLLISION:
 
@@ -114,13 +132,13 @@ int main()
 
   double twopi = 8*atan(1);
   double ZT = twopi * Z;
-  FA = 1 - BETA; // 1/gamma2
+  FA = 1 - BETA2; // 1/gamma2
   double FB = sqrt( FA ); // 1/gamma
   double FT = 1 - FB;
 
   double WA = 2*ZT * EINV / XMFP *           // Bethe-Bloch per step
     ( log( E * expot2 * SFACT / FA ) -
-      ( FB+FB+BETA ) * 6.931471805599453e-1 +
+      ( FB+FB+BETA2 ) * 6.931471805599453e-1 +
       FA + 0.125*FT*FT );
 
   cout << "  dEavg     " << WA*E*HRKEV*1e3 << " eV/step" << endl;
@@ -166,7 +184,7 @@ int main()
 
     } // steps
 
-    hloss.Fill( sumde*HRKEV );
+    htde.Fill( sumde*HRKEV );
     allde += sumde;
     varde += sumde*sumde;
 
@@ -179,12 +197,12 @@ int main()
   cout << endl;
   cout << "  tracks     " << ntr << endl;
   cout << "  mean loss  " << avgde*HRKEV << " +- " << rmsde*HRKEV << " keV" << endl;
-  cout << "  restricted " << hloss.GetMean() << " keV" << endl;
+  cout << "  restricted " << htde.GetMean() << " keV" << endl;
   cout << "  Bethe      " << WA*E0*HRKEV/rho*thck/step << " keV" << endl;
 
   // PDG:
   //double K = 0.307; // MeV cm2 / Mol
-  //double dEdx = 2*K*rho*Z/A/BETA * ( log( e0kev * expot2 * SFACT / FA ) -2*BEA ); // Wmax=E0/2
+  //double dEdx = 2*K*rho*Z/A/BETA2 * ( log( e0kev * expot2 * SFACT / FA ) -2*BEA ); // Wmax=E0/2
 
   cout << endl
        << histoFile->GetName() << endl
